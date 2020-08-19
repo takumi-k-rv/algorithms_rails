@@ -1,0 +1,20 @@
+編集
+
+<% if @error_message %>
+<div class="form-error">
+  <%= @error_message %>
+</div>
+<% end %>
+
+<%= form_with(url: "/users/#{@user.id}",method: :patch) do %>
+<p>ユーザー名</p>
+<input name="name" value="<%= @user.name %>">
+<p>メールアドレス</p>
+<input name="email" value="<%= @user.email %>">
+<p>画像</p>
+<input name="image" type="file">
+<input type="submit" value="更新">
+<% end %>
+
+<%= link_to 'Show', @user %> |
+<%= link_to 'Back', users_path %>
