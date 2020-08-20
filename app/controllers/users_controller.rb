@@ -1,5 +1,9 @@
+# coding: utf-8
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user, only: [:edit, :update, :destroy]
+  before_action :forbid_not_logged_in, only: [:new, :create, :login_form, :login]
+  before_action :forbid_logged_in, only: [:index, :show, :edit, :update, :destroy, :logout]
 
   # GET /users
   # GET /users.json
@@ -10,6 +14,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @user = User.find_by(id: params[:id])
   end
 
   # GET /users/new
@@ -19,6 +24,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find_by(id: params[:id])
   end
 
   # POST /users
@@ -29,6 +35,7 @@ class UsersController < ApplicationController
 
     if @user.save
       flash[:notice] = 'User was successfully created.'
+      session[:user_id] = @user.id
       redirect_to(@user)
     else
       @error_message = "Failed."
@@ -65,10 +72,43 @@ class UsersController < ApplicationController
     redirect_to(users_url)
   end
 
+  # GET /login
+  def login_form
+  end
+
+  # POST /login
+  def login
+    @user = User.find_by(email: params[:email])
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      flash[:notice] = "ログインしました"
+      redirect_to("/users")
+    else
+      @error_message = "メールアドレスまたはパスワードが間違っています"
+      @email = params[:email]
+      @password = params[:password]
+      render("users/login_form")
+    end
+  end
+
+  # POST /logout
+  def logout
+    session[:user_id] = nil
+    flash[:notice] = "ログアウトしました"
+    redirect_to("/login")
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def authenticate_user
+      if @current_user.id != params[:id]
+        flash[:notice] = "権限がありません"
+        redirect_to("/users")
+      end
     end
 
 end
