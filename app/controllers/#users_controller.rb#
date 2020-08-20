@@ -56,7 +56,7 @@ class UsersController < ApplicationController
       File.binwrite("public/user_images/#{@user.image_name}", image.read)
     end
 
-    if @user.update
+    if @user.save
       flash[:notice] = 'User was successfully updated.'
       redirect_to(@user)
     else
@@ -70,7 +70,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     flash[:notice] = 'User was successfully destroyed.'
-    redirect_to(users_url)
+    redirect_to("/")
   end
 
   # GET /login

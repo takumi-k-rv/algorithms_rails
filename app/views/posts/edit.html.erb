@@ -1,0 +1,20 @@
+編集
+
+<% if @error_message %>
+<div class="form-error">
+  <%= @error_message %>
+</div>
+<% end %>
+
+<%= form_with(url: "/posts/#{@post.id}",method: :patch) do %>
+<p>タイトル</p>
+<input name="title" value="<%= @post.title %>">
+<p>内容</p>
+<input name="content" value="<%= @post.content %>">
+<p>コード</p>
+<input name="code" value="<%= @post.code %>">
+<input type="submit" value="更新">
+<% end %>
+
+<%= link_to 'Show', @post %> |
+<%= link_to 'Back', posts_path %>
