@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user, only: [:edit, :update, :destroy]
   before_action :forbid_logged_in, only: [:new, :create, :login_form, :login]
   before_action :forbid_not_logged_in, only: [:index, :show, :edit, :update, :destroy, :logout]
+  before_action :admin_only, only: [:index]
 
   # GET /users
   # GET /users.json
@@ -28,16 +29,31 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(
+    if @current_user.admin
+      @user = User.new(
+        name: params[:name],
+        email: params[:email],
+        image_name: "default.png",
+        password: params[:password],
+        admin: params[:admin]
+      )
+    else
+      @user = User.new(
       name: params[:name],
       email: params[:email],
       image_name: "default.png",
-      password: params[:password])
+      password: params[:password]
+    )
+    end
 
     if @user.save
       flash[:notice] = 'User was successfully created.'
-      session[:user_id] = @user.id
-      redirect_to(@user)
+      if @current_user.admin
+        redirect_to(users_path)
+      else
+        session[:user_id] = @user.id
+        redirect_to(@user)
+      end
     else
       @error_message = "Failed."
       render("users/new")
@@ -56,9 +72,17 @@ class UsersController < ApplicationController
       File.binwrite("public/user_images/#{@user.image_name}", image.read)
     end
 
-    if @user.update
+    if @current_user.admin
+      @user.admin = params[:admin]
+    end
+
+    if @user.save
       flash[:notice] = 'User was successfully updated.'
-      redirect_to(@user)
+      if @current_user.admin
+        redirect_to(users_path)
+      else
+        redirect_to(@user)
+      end
     else
       @error_message = "Failed."
       render("users/edit")
@@ -70,7 +94,11 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     flash[:notice] = 'User was successfully destroyed.'
-    redirect_to(users_url)
+    if !@current_user.admin
+      redirect_to("/")
+    else
+      redirect_to("/users")
+    end
   end
 
   # GET /login
@@ -83,7 +111,7 @@ class UsersController < ApplicationController
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
       flash[:notice] = "ログインしました"
-      redirect_to("/users")
+      redirect_to("/posts")
     else
       @error_message = "メールアドレスまたはパスワードが間違っています"
       @email = params[:email]
@@ -106,9 +134,9 @@ class UsersController < ApplicationController
     end
 
     def authenticate_user
-      if @current_user.id != params[:id]
+      if @current_user.id != params[:id] && !@current_user.admin
         flash[:notice] = "権限がありません"
-        redirect_to("/users")
+        redirect_to("/posts")
       end
     end
 

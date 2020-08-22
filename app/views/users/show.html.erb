@@ -1,10 +1,24 @@
-<p>
-  <%= @user.name %>
-</p>
+<div calss="main users-show">
+  <div class="container">
 
-<p>
-  <%= @user.email %>
-</p>
+    <div class="user">
+    <p><%= @user.name %></p>
+    <p><%= @user.email %></p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+    <% if @current_user.id == @user.id || @current_user.admin %>
+    <%= link_to 'Edit', edit_user_path(@user) %>
+    <% end %>
+    </div>
+
+    <% @user.posts.each do |post| %>
+    <div class="posts-index-item">
+      <div class="post-right">
+        <%= link_to post.title, post %>
+        <div class="post-footer">
+          <%= post.updated_at %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

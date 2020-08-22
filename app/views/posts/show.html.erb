@@ -1,22 +1,29 @@
-<p>
-  <strong>Title:</strong>
-  <%= @post.title %>
-</p>
+<div calss="main posts-show">
+  <div class="container">
+    <% user = User.find_by(id: @post.user_id) %>
+    <div class="heading">
+      <p><%= user.name %></p>
+      <p><%= @post.updated_at %></p>
+    <p>
+      <strong><%= @post.title %></strong>
+    </p>
+    </div>
+    <div class="show-content">
+    <p>
+      <strong>Content:</strong>
+      <%= markdown(@post.content).html_safe %>
+    </p>
+    </div>
+    <div class="show-code">
+    <p>
+      <strong>Code:</strong>
+      <%= markdown(@post.code).html_safe %>
+    </p>
+    </div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @post.content %>
-</p>
-
-<p>
-  <strong>Code:</strong>
-  <%= @post.code %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @post.user_id %>
-</p>
-
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+    <% if @current_user.id = @post.user_id || @current_user.admin %>
+    <td><%= link_to 'Edit', edit_post_path(@post) %></td>
+    <td><%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <% end %>
+  </div>
+</div>

@@ -1,5 +1,8 @@
+# coding: utf-8
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :destroy, :authenticate_post]
+  before_action :authenticate_post, only: [:edit, :update, :destroy]
+  before_action :forbid_not_logged_in
 
   # GET /posts
   # GET /posts.json
@@ -65,6 +68,13 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+    end
+
+    def authenticate_post
+      if @current_user.id != @post.user_id
+        flash[:notice] = "権限がありません"
+        redirect_to("/posts")
+      end
     end
 
 end

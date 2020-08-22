@@ -14,9 +14,16 @@ class ApplicationController < ActionController::Base
   end
 
   def forbid_logged_in
-    if @current_user
+    if @current_user && !@current_user.admin
       flash[:notice] = "すでにログインしています"
-      redirect_to("/users")
+      redirect_to("/posts")
+    end
+  end
+
+  def admin_only
+    if !@current_user.admin
+      flash[:notice] = "権限がありません"
+      redirect_to("/")
     end
   end
 
