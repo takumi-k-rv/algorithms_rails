@@ -1,10 +1,10 @@
 # coding: utf-8
 class UsersController < ApplicationController
+  before_action :admin_only, only: [:index]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user, only: [:edit, :update, :destroy]
   before_action :forbid_logged_in, only: [:new, :create, :login_form, :login]
   before_action :forbid_not_logged_in, only: [:index, :show, :edit, :update, :destroy, :logout]
-  before_action :admin_only, only: [:index]
+  before_action :authenticate_user, only: [:edit, :update, :destroy]
 
   # GET /users
   # GET /users.json

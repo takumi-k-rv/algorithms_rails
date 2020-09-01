@@ -1,0 +1,11 @@
+# coding: utf-8
+FactoryBot.define do
+
+  factory :post do
+    title   {"test"}
+    content {"test"}
+    code    {"test"}
+    user_id {"1"}
+  end
+
+end
