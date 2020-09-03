@@ -5,8 +5,9 @@
     <p><%= @user.name %></p>
     <p><%= @user.email %></p>
 
-    <% if @current_user.id == @user.id || @current_user.admin %>
+    <% if @current_user && (@current_user.id == @user.id || @current_user.admin) %>
     <%= link_to 'Edit', edit_user_path(@user) %>
+    <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
     </div>
 

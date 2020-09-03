@@ -2,7 +2,7 @@
   <div class="container">
     <% user = User.find_by(id: @post.user_id) %>
     <div class="heading">
-      <p><%= user.name %></p>
+      <p><%= link_to user.name, user %></p>
       <p><%= @post.updated_at %></p>
     <p>
       <strong><%= @post.title %></strong>
@@ -21,7 +21,8 @@
     </p>
     </div>
 
-    <% if @current_user.id = @post.user_id || @current_user.admin %>
+
+    <% if @current_user && (@current_user.id == @post.user_id || @current_user.admin) %>
     <td><%= link_to 'Edit', edit_post_path(@post) %></td>
     <td><%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     <% end %>

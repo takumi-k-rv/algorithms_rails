@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_only
-    if !@current_user.admin
+    if @current_user && !@current_user.admin
       flash[:notice] = "権限がありません"
       redirect_to("/")
     end

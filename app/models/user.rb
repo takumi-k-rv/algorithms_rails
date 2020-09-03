@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  # :name, :email, :image_name, :password_digest
+  # :name, :email, :image_name, :password_digest, :admin
   has_secure_password
 
   has_many :posts, dependent: :destroy

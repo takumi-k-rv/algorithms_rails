@@ -1,19 +1,17 @@
 # coding: utf-8
 class UsersController < ApplicationController
-  before_action :admin_only, only: [:index]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :admin_only, only: [:index]
   before_action :forbid_logged_in, only: [:new, :create, :login_form, :login]
-  before_action :forbid_not_logged_in, only: [:index, :show, :edit, :update, :destroy, :logout]
+  before_action :forbid_not_logged_in, only: [:index, :edit, :update, :destroy, :logout]
   before_action :authenticate_user, only: [:edit, :update, :destroy]
 
   # GET /users
-  # GET /users.json
   def index
     @users = User.all
   end
 
   # GET /users/1
-  # GET /users/1.json
   def show
   end
 
@@ -27,9 +25,8 @@ class UsersController < ApplicationController
   end
 
   # POST /users
-  # POST /users.json
   def create
-    if @current_user.admin
+    if @current_user && @current_user.admin
       @user = User.new(
         name: params[:name],
         email: params[:email],
@@ -38,7 +35,7 @@ class UsersController < ApplicationController
         admin: params[:admin]
       )
     else
-      @user = User.new(
+     @user = User.new(
       name: params[:name],
       email: params[:email],
       image_name: "default.png",
@@ -47,24 +44,24 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      flash[:notice] = 'User was successfully created.'
-      if @current_user.admin
+      flash[:notice] = 'ユーザーを作成しました'
+      if @current_user && @current_user.admin
         redirect_to(users_path)
       else
         session[:user_id] = @user.id
         redirect_to(@user)
       end
     else
-      @error_message = "Failed."
+      @error_message = "失敗しました."
       render("users/new")
     end
   end
 
   # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
     @user.name = params[:name]
     @user.email = params[:email]
+    @user.password = params[:password]
 
     if params[:image_name]
       @user.image_name = "#{@user.id}.jpg"
@@ -77,23 +74,22 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      flash[:notice] = 'User was successfully updated.'
+      flash[:notice] = '更新しました'
       if @current_user.admin
         redirect_to(users_path)
       else
         redirect_to(@user)
       end
     else
-      @error_message = "Failed."
+      @error_message = "更新に失敗しました"
       render("users/edit")
     end
   end
 
   # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
     @user.destroy
-    flash[:notice] = 'User was successfully destroyed.'
+    flash[:notice] = '削除しました'
     if !@current_user.admin
       redirect_to("/")
     else
@@ -134,7 +130,7 @@ class UsersController < ApplicationController
     end
 
     def authenticate_user
-      if @current_user.id != params[:id] && !@current_user.admin
+      if @current_user.id != @user.id && !@current_user.admin
         flash[:notice] = "権限がありません"
         redirect_to("/posts")
       end

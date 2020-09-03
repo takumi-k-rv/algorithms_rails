@@ -29,18 +29,18 @@ RSpec.describe 'Algorithms', type: :request do
       end
     end
 
-    context 'user is not logged in' do
-      before {
-        get '/posts'
-      }
-      it 'returns status code 302' do
-        expect(response.status).to eq(302)
-      end
+    # context 'user is not logged in' do
+    #   before {
+    #     get '/posts'
+    #   }
+    #   it 'returns status code 302' do
+    #     expect(response.status).to eq(302)
+    #   end
 
-      it 'redirect to /login' do
-        expect(response).to redirect_to("/login");
-      end
-    end
+    #   it 'redirect to /login' do
+    #     expect(response).to redirect_to("/login");
+    #   end
+    # end
 
   end
 
@@ -66,18 +66,18 @@ RSpec.describe 'Algorithms', type: :request do
       end
     end
 
-    context 'user is not logged in' do
-      before {
-        get "/posts/#{post_id}"
-      }
-      it 'returns status code 302' do
-        expect(response.status).to eq(302)
-      end
+    # context 'user is not logged in' do
+    #   before {
+    #     get "/posts/#{post_id}"
+    #   }
+    #   it 'returns status code 302' do
+    #     expect(response.status).to eq(302)
+    #   end
 
-      it 'redirect to /login' do
-        expect(response).to redirect_to("/login")
-      end
-    end
+    #   it 'redirect to /login' do
+    #     expect(response).to redirect_to("/login")
+    #   end
+    # end
 
   end
 
@@ -106,7 +106,7 @@ RSpec.describe 'Algorithms', type: :request do
       end
 
       it 'redirect to /login' do
-        expect(response).to_not render_template("posts/new")
+        expect(response).to redirect_to("/login")
       end
     end
   end

@@ -19,6 +19,9 @@
         <% end %>
       </div>
       <ul class="header-menus">
+        <li>
+          <%= link_to("投稿一覧", "/posts") %>
+        </li>
         <% if @current_user %>
         <li>
           <% if @current_user.admin%>
@@ -26,9 +29,6 @@
           <% else %>
           <%= link_to(@current_user.name, "/users/#{@current_user.id}") %>
           <% end %>
-        </li>
-        <li>
-          <%= link_to("投稿一覧", "/posts") %>
         </li>
         <li>
           <%= link_to("新規投稿", "/posts/new") %>

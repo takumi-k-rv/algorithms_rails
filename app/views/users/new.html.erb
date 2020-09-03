@@ -18,7 +18,7 @@
         <input name="email" value="<%= @user.email %>">
         <p>パスワード</p>
         <input type="password" name="password" value="<%= @user.password %>">
-        <% if @current_user.admin %>
+        <% if @current_user && @current_user.admin %>
         <p>管理者権限</p>
         <select name="admin">
           <option value="false">ユーザ</option>

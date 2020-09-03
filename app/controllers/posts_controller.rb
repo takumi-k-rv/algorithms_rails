@@ -1,7 +1,7 @@
 # coding: utf-8
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy, :authenticate_post]
-  before_action :forbid_not_logged_in
+  before_action :forbid_not_logged_in, except: [:index, :show]
   before_action :authenticate_post, only: [:edit, :update, :destroy]
 
   # GET /posts
@@ -31,10 +31,10 @@ class PostsController < ApplicationController
       user_id: @current_user.id)
 
     if @post.save
-      flash[:notice] = 'Post was successfully created.'
+      flash[:notice] = '投稿を作成しました'
       redirect_to(@post)
     else
-      @error_message = "Failed."
+      @error_message = "失敗しました."
       render("posts/new")
     end
   end
@@ -46,10 +46,10 @@ class PostsController < ApplicationController
     @post.code = params[:code]
 
     if @post.save
-      flash[:notice] = 'Post was successfully updated.'
+      flash[:notice] = '更新しました'
       redirect_to(@post)
     else
-      @error_message = "Failed."
+      @error_message = "失敗しました"
       render("posts/edit")
     end
   end
@@ -57,7 +57,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   def destroy
     @post.destroy
-    flash[:notice] = 'Post was successfully destroyed.'
+    flash[:notice] = '削除しました'
     redirect_to("/users/#{@current_user.id}")
   end
 
