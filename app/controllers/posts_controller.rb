@@ -31,11 +31,11 @@ class PostsController < ApplicationController
       user_id: @current_user.id)
 
     if @post.save
-      flash[:notice] = '投稿を作成しました'
+      flash[:success] = '投稿を作成しました'
       redirect_to(@post)
     else
-      @error_message = "失敗しました."
-      render("posts/new")
+      flash[:danger] = "失敗しました."
+      redirect_to("/posts/new")
     end
   end
 
@@ -46,18 +46,18 @@ class PostsController < ApplicationController
     @post.code = params[:code]
 
     if @post.save
-      flash[:notice] = '更新しました'
+      flash[:success] = '更新しました'
       redirect_to(@post)
     else
-      @error_message = "失敗しました"
-      render("posts/edit")
+      flash[:danger] = "失敗しました"
+      rdirect_to("/posts/edit")
     end
   end
 
   # DELETE /posts/1
   def destroy
     @post.destroy
-    flash[:notice] = '削除しました'
+    flash[:success] = '削除しました'
     redirect_to("/users/#{@current_user.id}")
   end
 
@@ -69,8 +69,8 @@ class PostsController < ApplicationController
     end
 
     def authenticate_post
-      if @current_user.id != @post.user_id
-        flash[:notice] = "権限がありません"
+      if @current_user.id != @post.user_id && !@current_user.admin
+        flash[:danger] = "権限がありません"
         redirect_to("/posts")
       end
     end

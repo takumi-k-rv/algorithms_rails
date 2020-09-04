@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      flash[:notice] = 'ユーザーを作成しました'
+      flash[:success] = 'ユーザーを作成しました'
       if @current_user && @current_user.admin
         redirect_to(users_path)
       else
@@ -52,8 +52,8 @@ class UsersController < ApplicationController
         redirect_to(@user)
       end
     else
-      @error_message = "失敗しました."
-      render("users/new")
+      flash[:danger] = 'Failed'
+      redirect_to("/users/new")
     end
   end
 
@@ -61,7 +61,6 @@ class UsersController < ApplicationController
   def update
     @user.name = params[:name]
     @user.email = params[:email]
-    @user.password = params[:password]
 
     if params[:image_name]
       @user.image_name = "#{@user.id}.jpg"
@@ -74,22 +73,22 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      flash[:notice] = '更新しました'
+      flash[:success] = '更新しました'
       if @current_user.admin
-        redirect_to(users_path)
+        redirect_to("/users")
       else
         redirect_to(@user)
       end
     else
-      @error_message = "更新に失敗しました"
-      render("users/edit")
+      flash[:danger] = 'Failed'
+      redirect_to("/users/#{@user.id}/edit")
     end
   end
 
   # DELETE /users/1
   def destroy
     @user.destroy
-    flash[:notice] = '削除しました'
+    flash[:success] = '削除しました'
     if !@current_user.admin
       redirect_to("/")
     else
@@ -106,7 +105,7 @@ class UsersController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user && @user.authenticate(params[:password])
       session[:user_id] = @user.id
-      flash[:notice] = "ログインしました"
+      flash[:success] = "ログインしました"
       redirect_to("/posts")
     else
       @error_message = "メールアドレスまたはパスワードが間違っています"
@@ -119,7 +118,7 @@ class UsersController < ApplicationController
   # POST /logout
   def logout
     session[:user_id] = nil
-    flash[:notice] = "ログアウトしました"
+    flash[:success] = "ログアウトしました"
     redirect_to("/login")
   end
 
@@ -131,7 +130,7 @@ class UsersController < ApplicationController
 
     def authenticate_user
       if @current_user.id != @user.id && !@current_user.admin
-        flash[:notice] = "権限がありません"
+        flash[:danger] = "権限がありません"
         redirect_to("/posts")
       end
     end

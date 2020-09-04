@@ -1,31 +1,34 @@
 <div calss="main posts-new">
   <div class="container">
 
-    <h1>新規ユーザ</h1>
-
-    <% if @error_message %>
-    <div class="form-error">
-      <%= @error_message %>
-    </div>
-    <% end %>
+    <h2 class="form-heading">新規ユーザ</h2>
 
     <%= form_with(url: "/users") do %>
     <div class="form">
       <div class="form-body">
+        <div class="form-group">
         <p>ユーザー名</p>
-        <input name="name" value="<%= @user.name %>">
+        <input class="form-control" name="name" value="<%= @user.name %>">
+        </div>
+        <div class="form-group">
         <p>メールアドレス</p>
-        <input name="email" value="<%= @user.email %>">
+        <input class="form-control" name="email" value="<%= @user.email %>">
+        </div>
+        <div class="form-group">
         <p>パスワード</p>
-        <input type="password" name="password" value="<%= @user.password %>">
+        <input class="form-control" type="password" name="password" value="<%= @user.password %>">
+        </div>
+
         <% if @current_user && @current_user.admin %>
+        <div class="form-group">
         <p>管理者権限</p>
         <select name="admin">
           <option value="false">ユーザ</option>
           <option value="true">管理者</option>
         </select>
+        </div>
         <% end %>
-        <input type="submit" value="新規登録">
+        <button type="submit" class="btn btn-info">新規登録</button>
       </div>
     </div>
     <% end %>

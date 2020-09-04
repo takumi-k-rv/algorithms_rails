@@ -7,47 +7,56 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <header>
-      <div class="header-logo">
-        <% if @current_user %>
-          <%= link_to("Algorithms", "/posts") %>
-        <% else %>
-          <%= link_to("Algorithms", "/") %>
-        <% end %>
-      </div>
-      <ul class="header-menus">
-        <li>
-          <%= link_to("投稿一覧", "/posts") %>
-        </li>
-        <% if @current_user %>
-        <li>
-          <% if @current_user.admin%>
-          <%= link_to(@current_user.name, "/users") %>
-          <% else %>
-          <%= link_to(@current_user.name, "/users/#{@current_user.id}") %>
-          <% end %>
-        </li>
-        <li>
-          <%= link_to("新規投稿", "/posts/new") %>
-        </li>
-        <li>
-          <%= link_to("ログアウト", "/logout", {method: :post}) %>
-        </li>
-        <% else %>
-        <li>
-          <%= link_to("新規登録", "/users/new") %>
-        </li>
-        <li>
-          <%= link_to("ログイン", "/login") %>
-        </li>
-        <% end %>
-      </ul>
-    </header>
 
-    <p id="notice"><%= notice %></p>
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark mb-3">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <% if @current_user %>
+          <a class="navbar-brand" href="/posts">Algorithms</a>
+          <% else %>
+          <a class="navbar-brand" href="/">Algorithms</a>
+          <% end %>
+
+            <button class="navbar-toggler collapsed"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navmenu1"
+                    aria-controls="navmenu1"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navmenu1">
+              <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/posts">投稿一覧</a>
+                <% if @current_user %>
+                <% if @current_user.admin%>
+                <a class="nav-item nav-link" href="/users"><%= @current_user.name %></a>
+                <% else %>
+                <a class="nav-item nav-link" href="/users/#{@current_user.id}"><%= @current_user.name %></a>
+                <% end %>
+                <a class="nav-item nav-link" href="/posts/new">新規投稿</a>
+                <a class="nav-item nav-link" href="/logout" data-method="post">ログアウト</a>
+                <% else %>
+                <a class="nav-item nav-link" href="/users/new">新規登録</a>
+                <a class="nav-item nav-link" href="/login">ログイン</a>
+                <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <% flash.each do |name, msg| %>
+    <div class="alert alert-<%= name %>">
+      <%= msg.html_safe %>
+    </div>
+    <% end %>
 
     <%= yield %>
   </body>
