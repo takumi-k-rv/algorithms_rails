@@ -3,7 +3,7 @@
 
     <h2 class="form-heading">プロフィール編集</h2>
 
-    <%= form_with(url: "/users/#{@user.id}",method: :patch) do %>
+    <%= form_with(url: "/users/#{@user.id}",method: :patch, multipart: true) do %>
     <div class="form">
       <div class="form-body">
         <div class="form-group">
@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
           <p>画像</p>
-          <input name="image" type="file">
+          <input name="image" type="file" accept="image/*">
         </div>
           <% if @current_user.admin %>
         </div>

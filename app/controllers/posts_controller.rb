@@ -6,7 +6,7 @@ class PostsController < ApplicationController
 
   # GET /posts
   def index
-    @posts = Post.all
+    @posts = Post.page(params[:page]).per(5)
   end
 
   # GET /posts/1
@@ -50,7 +50,7 @@ class PostsController < ApplicationController
       redirect_to(@post)
     else
       flash[:danger] = "失敗しました"
-      rdirect_to("/posts/edit")
+      redirect_to("/posts/edit")
     end
   end
 

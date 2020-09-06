@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Algorithms', type: :request do
 
   let!(:user) {FactoryBot.create(:user)}
-  let!(:posts) {FactoryBot.create_list(:post, 10, user: user)}
+  let!(:posts) {FactoryBot.create_list(:post, 5, user: user)}
   let(:test_post) {posts.first}
   let(:post_id) {posts.first.id}
 
@@ -28,20 +28,6 @@ RSpec.describe 'Algorithms', type: :request do
         expect(assigns(:posts)).to eq(posts)
       end
     end
-
-    # context 'user is not logged in' do
-    #   before {
-    #     get '/posts'
-    #   }
-    #   it 'returns status code 302' do
-    #     expect(response.status).to eq(302)
-    #   end
-
-    #   it 'redirect to /login' do
-    #     expect(response).to redirect_to("/login");
-    #   end
-    # end
-
   end
 
   # GET /posts/:id
@@ -65,20 +51,6 @@ RSpec.describe 'Algorithms', type: :request do
         expect(assigns(:post)).to eq(test_post)
       end
     end
-
-    # context 'user is not logged in' do
-    #   before {
-    #     get "/posts/#{post_id}"
-    #   }
-    #   it 'returns status code 302' do
-    #     expect(response.status).to eq(302)
-    #   end
-
-    #   it 'redirect to /login' do
-    #     expect(response).to redirect_to("/login")
-    #   end
-    # end
-
   end
 
   # GET /posts/new
@@ -190,14 +162,14 @@ RSpec.describe 'Algorithms', type: :request do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return(user_id: user.id)
       }
 
-      it 'returns status code 200' do
+      it 'returns status code 302' do
         post "/posts", abnormal_params
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
       it 'renders new.html.erb' do
         post "/posts", abnormal_params
-        expect(response).to render_template("posts/new")
+        expect(response).to redirect_to("/posts/new")
       end
 
       it 'unsaved the new post' do
@@ -268,14 +240,14 @@ RSpec.describe 'Algorithms', type: :request do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return(user_id: user.id)
       }
 
-      it 'returns status code 200' do
+      it 'returns status code 302' do
         patch "/posts/#{post_id}", abnormal_params
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
-      it 'renders edit.html.erb' do
+      it 'redirect_to /posts/edit' do
         patch "/posts/#{post_id}", abnormal_params
-        expect(response).to render_template("posts/edit")
+        expect(response).to redirect_to("/posts/edit")
       end
 
       it 'did not update the new post' do

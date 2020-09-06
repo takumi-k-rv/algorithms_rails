@@ -216,14 +216,14 @@ RSpec.describe 'Algorithms', type: :request do
 
     context 'user is not logged in && abnormal data 1' do
 
-      it 'returns status code 200' do
+      it 'returns status code 302' do
         post "/users", abnormal_params1
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
-      it 'renders new.html.erb' do
+      it 'redirect_to /users/new' do
         post "/users", abnormal_params1
-        expect(response).to render_template("users/new")
+        expect(response).to redirect_to("/users/new")
       end
 
       it 'unsaved the new user' do
@@ -233,14 +233,14 @@ RSpec.describe 'Algorithms', type: :request do
 
     context 'user is not logged in && abnormal data 2' do
 
-      it 'returns status code 200' do
+      it 'returns status code 302' do
         post "/users", abnormal_params2
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
-      it 'renders new.html.erb' do
+      it 'redirect_to /users/new' do
         post "/users", abnormal_params2
-        expect(response).to render_template("users/new")
+        expect(response).to redirect_to("/users/new")
       end
 
       it 'unsaved the new user' do
@@ -286,7 +286,6 @@ RSpec.describe 'Algorithms', type: :request do
         patch "/users/#{user.id}", normal_params
         expect(assigns(:user).name).to eq(new_user.name)
         expect(assigns(:user).email).to eq(new_user.email)
-        expect(assigns(:user).password).to eq(new_user.password)
       end
     end
 
@@ -296,14 +295,14 @@ RSpec.describe 'Algorithms', type: :request do
         allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return(user_id: user.id)
       }
 
-      it 'returns status code 200' do
+      it 'returns status code 302' do
         patch "/users/#{user.id}", abnormal_params1
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(302)
       end
 
-      it 'renders edit.html.erb' do
+      it 'redirect_to /users/edit' do
         patch "/users/#{user.id}", abnormal_params1
-        expect(response).to render_template("users/edit")
+        expect(response).to redirect_to("/users/#{user.id}/edit")
       end
 
       it 'did not update the new user' do

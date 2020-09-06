@@ -65,48 +65,23 @@ body {
 }
 
 .container {
-    max-width: 60%;
     margin: 30px auto;
-    padding-left: 15px;
-    padding-right: 15px;
-    clear: both;
     background-color: #f5f8fa;
 }
 
-/* /\* ヘッダー  *\/ */
-/* header { */
-/*     position: relative; */
-/*     height: 50px; */
-/*     width: 100%; */
-/*     background-color: #66cc99; */
-/* } */
+/*ページネーション自体のデザイン*/
+.pagination>li>a {
+  border: none;     /*枠線をなくす*/
+  color: #696969;   /*文字の色を変える*/
+}
 
-/* .header-logo { */
-/*     position: absolute; */
-/*     top: 50%; */
-/*     transform: translateY(-50%); */
-/*     /\* -webkit-transform: translateY(-50%); *\/ */
-/*     /\* -ms-transform: translateY(-50%); *\/ */
-/*     float: left; */
-/*     padding-left: 30%; */
-/*     color: white; */
-/*     font-size: 22px; */
-/*     line-height: 100px; */
-/* } */
+/* 表示しているページ番号のデザイン */
+.pagination>.active>a {
+  background: #93c9ff;     /*背景の色を変える*/
+  border-radius: 15px;     /*角を丸くする*/
+}
 
-/* .header-menus { */
-/*     position: absolute; */
-/*     top: 50%; */
-/*     left: 65%; */
-/*     transform: translate(-10%,-50%); */
-/*     float: right; */
-/*     padding-right: 20%; */
-/* } */
-
-/* .header-menus li { */
-/*     float: left; */
-/*     line-height: 100px; */
-/*     font-size: 14px; */
-/*     color: white; */
-/*     padding-left: 15px; */
-/* } */
+/*ホバー時のデザイン*/
+.pagination>li>a:hover {
+  border-radius: 15px;    /*角を丸くする*/
+}

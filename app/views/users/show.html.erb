@@ -1,25 +1,43 @@
 <div calss="main users-show">
-  <div class="container">
+  <div class="container p-0">
 
     <div class="user">
-    <p><%= @user.name %></p>
-    <p><%= @user.email %></p>
-
-    <% if @current_user && (@current_user.id == @user.id || @current_user.admin) %>
-    <%= link_to 'Edit', edit_user_path(@user) %>
-    <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
-    <% end %>
+      <div class="posts-index-item p-3">
+        <div class="media ml-2">
+          <a class="mr-3">
+            <img src="<%= "/user_images/#{@user.image_name}" %>" class="img-fluid rounded-circle" width="100" height="100">
+          </a>
+          <div class="media-body pt-5">
+            <% if @current_user && (@current_user.id == @user.id || @current_user.admin) %>
+            <li>
+              <%= link_to 'Edit', edit_user_path(@user) %>
+            </li>
+            <li>
+              <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </li>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="ml-5">
+            <p><%= @user.name %></p>
+      </div>
     </div>
 
+    <table class="table">
     <% @user.posts.each do |post| %>
-    <div class="posts-index-item">
-      <div class="post-right">
-        <%= link_to post.title, post %>
-        <div class="post-footer">
-          <%= post.updated_at %>
+    <div class="posts-index-item border p-3">
+      <div class="media">
+        <div class="media-body">
+          <%= link_to post.title, post %>
+          <h6 class="mt-1">
+            <%= post.updated_at %>
+          </h6>
         </div>
       </div>
     </div>
     <% end %>
+    </table>
+
   </div>
 </div>

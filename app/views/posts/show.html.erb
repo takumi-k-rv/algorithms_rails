@@ -1,16 +1,27 @@
 <div calss="main posts-show">
   <div class="container">
     <% user = User.find_by(id: @post.user_id) %>
+
     <div class="heading">
-      <p><%= link_to user.name, user %></p>
-      <p><%= @post.updated_at %></p>
-    <p>
-      <strong><%= @post.title %></strong>
-    </p>
+
+      <table class="table">
+        <div class="posts-index-item p-3 border-bottom">
+          <div class="media mt-3">
+            <a class="mr-3">
+              <img src="<%= "/user_images/#{@post.user.image_name}" %>" class="img-fluid rounded-circle" width="50" height="50">
+            </a>
+            <div class="media-body">
+              <p><%= link_to user.name, user %></p>
+              <p><%= @post.updated_at %></p>
+            </div>
+          </div>
+        </div>
+      </table>
+      <h3 class="p-0"><strong><%= @post.title %></strong></h3>
     </div>
+
     <div class="show-content">
     <p>
-      <!-- <strong>Content:</strong> -->
       <%= markdown(@post.content).html_safe %>
     </p>
     </div>
@@ -23,8 +34,10 @@
 
 
     <% if @current_user && (@current_user.id == @post.user_id || @current_user.admin) %>
-    <td><%= link_to 'Edit', edit_post_path(@post) %></td>
-    <td><%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <ul class="list-group list-group-horizontal-md pull-left">
+      <li class="list-group-item"><%= link_to 'Edit', edit_post_path(@post) %></td>
+      <li class="list-group-item"><%= link_to 'Destroy', @post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </div>
     <% end %>
   </div>
 </div>

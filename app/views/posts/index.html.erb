@@ -1,15 +1,20 @@
 <div calss="main posts-index">
-  <div class="container">
+  <div class="container p-0">
+
+    <%= paginate @posts %>
 
     <table class="table">
     <% @posts.each do |post| %>
-    <div class="posts-index-item">
-      <div class="post-left">
-      </div>
-      <div class="post-right">
-        <%= link_to post.title, post %>
-        <div class="post-footer">
-          <%= post.updated_at %>
+    <div class="posts-index-item border p-3">
+      <div class="media">
+        <a class="mr-3">
+          <img src="<%= "/user_images/#{post.user.image_name}" %>" class="img-fluid rounded-circle" width="50" height="50">
+        </a>
+        <div class="media-body">
+          <%= link_to post.title, post %>
+          <h6 class="mt-1">
+            <%= post.updated_at %>
+          </h6>
         </div>
       </div>
     </div>
