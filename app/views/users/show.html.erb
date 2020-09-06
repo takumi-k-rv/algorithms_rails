@@ -20,24 +20,55 @@
         </div>
       </div>
       <div class="ml-5">
-            <p><%= @user.name %></p>
+        <p><%= @user.name %></p>
       </div>
     </div>
 
-    <table class="table">
-    <% @user.posts.each do |post| %>
-    <div class="posts-index-item border p-3">
-      <div class="media">
-        <div class="media-body">
-          <%= link_to post.title, post %>
-          <h6 class="mt-1">
-            <%= post.updated_at %>
-          </h6>
-        </div>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a href="#posts" class="nav-link active" data-toggle="tab">posts</a>
+      </li>
+      <li class="nav-item">
+        <a href="#bookmarks" class="nav-link" data-toggle="tab">bookmarks</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="posts" class="tab-pane active">
+        <table class="table">
+          <% @user.posts.each do |post| %>
+          <div class="posts-index-item border p-3">
+            <div class="media">
+              <div class="media-body">
+                <%= link_to post.title, post %>
+                <h6 class="mt-1">
+                  <%= post.updated_at %>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </table>
+      </div>
+      <div id="bookmarks" class="tab-pane">
+        <table class="table">
+          <% bookmarks = Bookmark.where(user_id: @user.id) %>
+          <% bookmarks.each do |bookmark| %>
+          <% post = Post.find(bookmark.post_id) %>
+          <div class="posts-index-item border p-3">
+            <div class="media">
+              <div class="media-body">
+                <%= link_to post.title, post %>
+                <h6 class="mt-1">
+                  <%= post.updated_at %>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <% end %>
+        </table>
       </div>
     </div>
-    <% end %>
-    </table>
 
   </div>
 </div>

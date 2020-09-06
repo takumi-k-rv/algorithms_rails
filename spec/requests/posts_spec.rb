@@ -10,9 +10,8 @@ RSpec.describe 'Algorithms', type: :request do
   # GET /posts
   describe 'GET /posts' do
 
-    context 'user is logged in' do
+    context 'user is not logged in' do
       before {
-        allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return(user_id: user.id)
         get '/posts'
       }
 
@@ -33,9 +32,8 @@ RSpec.describe 'Algorithms', type: :request do
   # GET /posts/:id
   describe 'GET /posts/:id' do
 
-    context 'user is logged in' do
+    context 'user is not logged in' do
       before {
-        allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_return(user_id: user.id)
         get "/posts/#{post_id}"
       }
 

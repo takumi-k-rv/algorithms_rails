@@ -7,4 +7,7 @@ Rails.application.routes.draw do
   post "login" => "users#login"
   post "logout" => "users#logout"
   resources :users
+
+  post "bookmarks/:post_id/create" => "bookmarks#create"
+  post "bookmarks/:post_id/destroy" => "bookmarks#destroy"
 end
