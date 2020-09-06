@@ -9,8 +9,7 @@ RSpec.describe 'Algorithms', type: :request do
 
   # GET /posts
   describe 'GET /posts' do
-
-    context 'user is not logged in' do
+    context 'index all' do
       before {
         get '/posts'
       }
@@ -27,27 +26,48 @@ RSpec.describe 'Algorithms', type: :request do
         expect(assigns(:posts)).to eq(posts)
       end
     end
-  end
 
-  # GET /posts/:id
-  describe 'GET /posts/:id' do
-
-    context 'user is not logged in' do
+    context 'index tag' do
       before {
-        get "/posts/#{post_id}"
+        posts.first.tag_list = ["test"]
+        posts.first.save
+        posts.second.tag_list = ["test"]
+        posts.second.save
+
+        get '/posts', params: {tag_name: "test"}
       }
 
       it 'returns status code 200' do
         expect(response.status).to eq(200)
       end
 
-      it 'renders show.html.erb' do
-        expect(response).to render_template("posts/show")
+      it 'renders index.html.erb' do
+        expect(response).to render_template("posts/index")
       end
 
-      it 'assigns to post' do
-        expect(assigns(:post)).to eq(test_post)
+      it 'assigns to posts' do
+        expect(assigns(:posts)).to eq([posts.first, posts.second])
       end
+    end
+  end
+
+  # GET /posts/:id
+  describe 'GET /posts/:id' do
+
+    before {
+      get "/posts/#{post_id}"
+    }
+
+    it 'returns status code 200' do
+      expect(response.status).to eq(200)
+    end
+
+    it 'renders show.html.erb' do
+      expect(response).to render_template("posts/show")
+    end
+
+    it 'assigns to post' do
+      expect(assigns(:post)).to eq(test_post)
     end
   end
 

@@ -4,23 +4,21 @@
     <div class="user">
       <div class="posts-index-item p-3">
         <div class="media ml-2">
-          <a class="mr-3">
+          <a class="m-2">
             <img src="<%= "/user_images/#{@user.image_name}" %>" class="img-fluid rounded-circle" width="100" height="100">
           </a>
-          <div class="media-body pt-5">
+          <div class="media-body pt-3">
             <% if @current_user && (@current_user.id == @user.id || @current_user.admin) %>
-            <li>
-              <%= link_to 'Edit', edit_user_path(@user) %>
-            </li>
-            <li>
-              <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </li>
+            <ul class="list-group list-group-sm float-right">
+              <li class="list-group-item"><%= link_to 'Edit', edit_user_path(@user) %></li>
+              <li class="list-group-item"><%= link_to 'Destroy', @puser, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            </ul>
             <% end %>
           </div>
         </div>
       </div>
       <div class="ml-5">
-        <p><%= @user.name %></p>
+        <p class="h5 text-muted"><%= @user.name %></p>
       </div>
     </div>
 
@@ -45,6 +43,13 @@
                   <%= post.updated_at %>
                 </h6>
               </div>
+              <div class="m-2">
+                <% post.tag_list.each do |tag| %>
+                <%= link_to posts_path(tag_name: tag) do %>
+                <span class="badge badge-primary mr-1 p-2"><%= tag %></span>
+                <% end %>
+                <% end %>
+              </div>
             </div>
           </div>
           <% end %>
@@ -62,6 +67,13 @@
                 <h6 class="mt-1">
                   <%= post.updated_at %>
                 </h6>
+              </div>
+              <div class="m-2">
+                <% post.tag_list.each do |tag| %>
+                <%= link_to posts_path(tag_name: tag) do %>
+                <span class="badge badge-primary mr-1 p-2"><%= tag %></span>
+                <% end %>
+                <% end %>
               </div>
             </div>
           </div>

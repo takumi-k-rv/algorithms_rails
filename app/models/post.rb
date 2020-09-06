@@ -1,5 +1,7 @@
 class Post < ApplicationRecord
   # :title, :content, :code, :user
+  acts_as_taggable
+
   belongs_to :user
 
   has_many :bookmarks, dependent: :destroy

@@ -7,6 +7,9 @@ class PostsController < ApplicationController
   # GET /posts
   def index
     @posts = Post.page(params[:page]).per(5)
+    if params[:tag_name]
+      @posts = Post.tagged_with("#{params[:tag_name]}").page(params[:page]).per(5)
+    end
   end
 
   # GET /posts/1
@@ -44,6 +47,7 @@ class PostsController < ApplicationController
     @post.title = params[:title]
     @post.content = params[:content]
     @post.code = params[:code]
+    @post.tag_list = params[:tag_list]
 
     if @post.save
       flash[:success] = '更新しました'
